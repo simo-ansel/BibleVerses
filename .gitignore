@@ -41,3 +41,9 @@ example
 # generated native folders
 /ios
 /android
+
+# source texts for scripts/build_db.py (download with: node scripts/fetch-sources.mjs)
+/sources/
+
+# Play Console service account key (never commit)
+*service-account*.json
