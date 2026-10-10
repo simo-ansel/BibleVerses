@@ -7,7 +7,7 @@ import { Alert, Linking, Pressable, ScrollView, StyleSheet, Switch, Text, View }
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { updateSettings, useSettings, type ReaderFont, type TextSize } from '@/data/store';
-import { rescheduleVerses, requestPermission } from '@/notifications';
+import { notificationsAvailable, rescheduleVerses, requestPermission } from '@/notifications';
 import { Fonts, Space, useColors } from '@/theme';
 import { ScreenHeader, Segmented } from '@/ui/components';
 
@@ -68,12 +68,16 @@ export default function SettingsScreen() {
           <View style={styles.row}>
             <View style={styles.flex}>
               <Text style={[styles.label, { color: c.ink }]}>Morning notification</Text>
-              <Text style={[styles.help, { color: c.inkSoft }]}>Get the day’s verse on your lock screen.</Text>
+              <Text style={[styles.help, { color: c.inkSoft }]}>
+                {notificationsAvailable
+                  ? 'Get the day’s verse on your lock screen.'
+                  : 'Works in the installed app. Expo Go can’t show notifications.'}
+              </Text>
             </View>
             <Switch
-              value={settings.notify}
+              value={notificationsAvailable && settings.notify}
               onValueChange={setNotify}
-              disabled={busy}
+              disabled={busy || !notificationsAvailable}
               trackColor={{ true: c.lapis, false: c.rule }}
               thumbColor={c.surface}
               accessibilityLabel="Morning notification"
@@ -82,8 +86,12 @@ export default function SettingsScreen() {
           <View style={[styles.divider, { backgroundColor: c.rule }]} />
           <Pressable
             onPress={pickTime}
-            disabled={!settings.notify}
-            style={({ pressed }) => [styles.row, { opacity: settings.notify ? 1 : 0.45 }, pressed && { backgroundColor: c.selection }]}
+            disabled={!settings.notify || !notificationsAvailable}
+            style={({ pressed }) => [
+              styles.row,
+              { opacity: settings.notify && notificationsAvailable ? 1 : 0.45 },
+              pressed && { backgroundColor: c.selection },
+            ]}
             accessibilityRole="button"
             accessibilityLabel={`Time, ${pad(settings.notifyHour)}:${pad(settings.notifyMinute)}`}>
             <Text style={[styles.label, styles.flex, { color: c.ink }]}>Time</Text>
