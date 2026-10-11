@@ -36,7 +36,8 @@ bibleverses/
 1. **Node.js** versione LTS (22 o più recente): scaricalo da <https://nodejs.org> e installalo.
 2. **Git** (<https://git-scm.com>): la cartella è già un repository git, e le build di Expo lo usano per sapere quali file caricare.
 3. Sul telefono Android installa **Expo Go** dal Play Store.
-4. Apri un terminale (su Windows: *PowerShell*) dentro la cartella `bibleverses` ed esegui:
+4. Estrai lo zip **da terminale** con `unzip bibleverses.zip`: così vengono estratti anche i file nascosti (`.git`, `.gitignore`), che alcuni gestori di file saltano. Se sposti la cartella, spostala intera, non solo il contenuto.
+5. Apri un terminale (su Windows: *PowerShell*) dentro la cartella `bibleverses` ed esegui:
 
    ```bash
    npm install
@@ -71,13 +72,15 @@ Cose da controllare in questa fase:
 Le build per il Play Store si fanno nel cloud di Expo (EAS), gratis nel piano base: non ti serve Android Studio.
 
 1. Crea un account gratuito su <https://expo.dev/signup>.
-2. Nel terminale:
+2. Nel terminale, **senza `sudo`** (con `sudo` i comandi girano come utente root e il login finisce nel posto sbagliato):
 
    ```bash
-   npm install -g eas-cli
+   npm install -g eas-cli      # su Linux, se dà errore di permessi: npx eas-cli@latest al posto di eas
    eas login
    eas init
    ```
+
+   Se `eas` risponde *"Run this command inside a project directory"*, nella cartella in cui sei manca `package.json`: controlla con `ls -la` di essere nella cartella del progetto e che lo zip sia stato estratto per intero.
 
    `eas init` collega la cartella al tuo account e aggiunge un `projectId` in `app.json`.
 
