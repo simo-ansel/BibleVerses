@@ -1,7 +1,28 @@
 {
   "name": "bibleverses",
-  "main": "expo-router/entry",
   "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "expo-router/entry",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "expo start",
+    "build:dev": "eas build --platform android --profile development",
+    "build:preview": "eas build --platform android --profile preview",
+    "build:release": "eas build --platform android --profile production",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --disable-warning=ExperimentalWarning --import tsx --test \"tests/**/*.test.ts\"",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm test",
+    "doctor": "npx expo-doctor@latest",
+    "data:fetch": "node --import tsx scripts/fetch-sources.ts",
+    "data:build": "node --disable-warning=ExperimentalWarning --import tsx scripts/build-bible-db.ts",
+    "assets:generate": "node --import tsx scripts/generate-assets.ts"
+  },
   "dependencies": {
     "@expo-google-fonts/eb-garamond": "^0.4.3",
     "@expo-google-fonts/im-fell-english": "^0.4.0",
@@ -12,6 +33,7 @@
     "expo": "~57.0.27",
     "expo-clipboard": "~57.0.2",
     "expo-constants": "~57.0.21",
+    "expo-dev-client": "~57.0.19",
     "expo-file-system": "~57.0.7",
     "expo-font": "~57.0.4",
     "expo-haptics": "~57.0.3",
@@ -24,13 +46,10 @@
     "expo-status-bar": "~57.0.1",
     "expo-system-ui": "~57.0.4",
     "react": "19.2.3",
-    "react-dom": "19.2.3",
     "react-native": "0.86.3",
-    "react-native-gesture-handler": "~2.32.0",
     "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
-    "react-native-web": "~0.21.0",
     "react-native-worklets": "0.10.1"
   },
   "devDependencies": {
@@ -39,18 +58,15 @@
     "canvaskit-wasm": "^0.42.0",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~57.0.2",
+    "prettier": "3.9.10",
     "tsx": "^4.23.15",
     "typescript": "~6.0.3"
   },
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "lint": "expo lint",
-    "test": "tsx --test tests/*.test.ts",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json",
-    "build:db": "python3 scripts/build_db.py --kjva sources/KJVA.json --enoch sources/1-enoch.json --jubilees sources/book-of-jubilees.json"
-  },
-  "private": true
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "listUnknownPackages": false
+      }
+    }
+  }
 }

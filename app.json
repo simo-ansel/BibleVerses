@@ -3,15 +3,12 @@
     "name": "BibleVerses",
     "slug": "bibleverses",
     "version": "1.0.0",
+    "platforms": ["android"],
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "bibleverses",
     "userInterfaceStyle": "automatic",
     "backgroundColor": "#ECEEE9",
-    "ios": {
-      "bundleIdentifier": "com.simoneanse.bibleverses",
-      "supportsTablet": true
-    },
     "android": {
       "package": "com.simoneanse.bibleverses",
       "adaptiveIcon": {

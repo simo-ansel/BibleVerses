@@ -1,0 +1,14 @@
+Copyright (c) 2026 simo-ansel. All rights reserved.
+
+This repository and everything in it (source code, design, graphics, icons and
+documentation) is proprietary. No permission is granted to copy, modify, publish,
+distribute, sublicense or sell any part of it, or to build and distribute the app
+or any derivative of it, in any app store or by any other means, without prior
+written permission from the copyright holder.
+
+Third-party material keeps its own license:
+- Bible texts (King James Version with Apocrypha; 1 Enoch and Jubilees translated
+  by R. H. Charles) are in the public domain.
+- The typefaces IM Fell English, EB Garamond and Jost are licensed under the SIL
+  Open Font License 1.1.
+- npm dependencies are licensed under their respective licenses.

@@ -1,14 +1,14 @@
 import { Tabs } from 'expo-router/js-tabs';
 
-import { useColors } from '@/theme';
-import { TabBar } from '@/ui/TabBar';
+import { TabBar } from '@/ui/components/TabBar';
+import { useColors } from '@/ui/theme';
 
 export default function TabsLayout() {
-  const c = useColors();
+  const colors = useColors();
   return (
     <Tabs
       tabBar={(props) => <TabBar {...props} />}
-      screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: c.ground } }}>
+      screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: colors.ground } }}>
       <Tabs.Screen name="index" />
       <Tabs.Screen name="read" />
       <Tabs.Screen name="search" />

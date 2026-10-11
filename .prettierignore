@@ -1,0 +1,10 @@
+node_modules
+dist
+android
+ios
+.expo
+sources
+assets
+store/*.png
+package-lock.json
+*.generated.ts

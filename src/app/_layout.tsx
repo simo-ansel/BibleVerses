@@ -1,50 +1,61 @@
 import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { SQLiteProvider, useSQLiteContext } from 'expo-sqlite';
 import { useEffect } from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { View } from 'react-native';
 
-import { SkiaFontsProvider } from '@/art/SkiaFonts';
-import { DB_FILE } from '@/data/books.generated';
-import { rescheduleVerses } from '@/notifications';
-import { FONT_FILES, useColors, useIsDark } from '@/theme';
+import { ServicesProvider } from '@/composition/ServicesProvider';
+import { openToday } from '@/ui/navigation';
+import { useServices } from '@/ui/services';
+import { FONT_FILES, useColors, useIsDark } from '@/ui/theme';
 
-SplashScreen.preventAutoHideAsync().catch(() => {});
+void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts(FONT_FILES);
-  const c = useColors();
+  const colors = useColors();
   const dark = useIsDark();
 
   if (!fontsLoaded && !fontError) return null;
 
-  const navTheme = dark ? DarkTheme : DefaultTheme;
+  const base = dark ? DarkTheme : DefaultTheme;
+  const theme = {
+    ...base,
+    colors: {
+      ...base.colors,
+      background: colors.ground,
+      card: colors.ground,
+      text: colors.ink,
+      border: colors.rule,
+      primary: colors.lapis,
+    },
+  };
+
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: c.ground }}>
-      <ThemeProvider value={{ ...navTheme, colors: { ...navTheme.colors, background: c.ground, card: c.ground, text: c.ink, border: c.rule, primary: c.lapis } }}>
-        <SQLiteProvider
-          databaseName={DB_FILE}
-          assetSource={{ assetId: require('@/assets/db/bible.db') }}
-          options={{ enableChangeListener: false }}>
-          <SkiaFontsProvider>
-            <Startup />
-            <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: c.ground }, animation: 'fade_from_bottom' }}>
-              <Stack.Screen name="(tabs)" options={{ animation: 'none' }} />
-            </Stack>
-          </SkiaFontsProvider>
-        </SQLiteProvider>
+    <View style={{ flex: 1, backgroundColor: colors.ground }}>
+      <ThemeProvider value={theme}>
+        <ServicesProvider>
+          <AppReady />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: colors.ground },
+              animation: 'fade_from_bottom',
+            }}>
+            <Stack.Screen name="(tabs)" options={{ animation: 'none' }} />
+          </Stack>
+        </ServicesProvider>
       </ThemeProvider>
-    </GestureHandlerRootView>
+    </View>
   );
 }
 
-/** Runs once the database is ready: hides the splash and tops up the morning notifications. */
-function Startup() {
-  const db = useSQLiteContext();
+/** Rendered once the services are ready: hides the splash screen and opens Today when the reminder is tapped. */
+function AppReady() {
+  const { reminders } = useServices();
   useEffect(() => {
-    SplashScreen.hideAsync().catch(() => {});
-    rescheduleVerses(db).catch(() => {});
-  }, [db]);
+    void SplashScreen.hideAsync();
+    return reminders.onOpened(openToday);
+  }, [reminders]);
   return null;
 }
