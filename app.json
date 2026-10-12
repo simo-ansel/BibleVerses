@@ -3,7 +3,9 @@
     "name": "BibleVerses",
     "slug": "bibleverses",
     "version": "1.0.0",
-    "platforms": ["android"],
+    "platforms": [
+      "android"
+    ],
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "bibleverses",
@@ -54,6 +56,13 @@
     "experiments": {
       "typedRoutes": false,
       "reactCompiler": false
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "48028af0-84ea-4e55-b59d-bc519329ac4b"
+      }
+    },
+    "owner": "anshell"
   }
 }
